@@ -1,6 +1,6 @@
 # demo-rn-app
 
-##how to setup locally
+## how to setup locally
 
 npm install -g expo-cli
 
