@@ -5,18 +5,19 @@ import Contact from './Contact';
 
 export default function ContactList() {
   const [contacts, setContacts] = useState([]);
-  let list;
-  useEffect(async () => {
-    const { status } = await Contacts.requestPermissionsAsync();
-    if (status === 'granted') {
-      const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
-      });
-      console.log(data.length, data);
-      if (data.length > 0) {
-        await setContacts((contacts) => contacts.concat(data));
+  useEffect(() => {
+    (async () => {
+      const { status } = await Contacts.requestPermissionsAsync();
+      if (status === 'granted') {
+        const { data } = await Contacts.getContactsAsync({
+          fields: [Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
+        });
+        console.log(data.length, data);
+        if (data.length > 0) {
+          await setContacts((contacts) => contacts.concat(data));
+        }
       }
-    }
+    })();
   }, []);
   return (
     <View
@@ -61,7 +62,7 @@ export default function ContactList() {
 
       <View style={{ flex: 1, paddingHorizontal: 20 }}>
         {contacts.map((contact) => {
-          return <Contact name={contact.name} />;
+          return <Contact key={contact.id} name={contact.name} />;
         })}
       </View>
     </View>
